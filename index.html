@@ -458,7 +458,7 @@
 
                 <div class="section">
                     <h2>References</h2>
-                    <div class="references-grid">
+                    <div class="references-grid print-hidden">
                         <div class="reference-card">
                             <div class="ref-name">Chris Han</div>
                             <div class="ref-role">Head of Frontend</div>
@@ -477,6 +477,9 @@
                                 LinkedIn
                             </a>
                         </div>
+                    </div>
+                    <div class="references print-only">
+                        <p>Available upon request</p>
                     </div>
                 </div>
             </div>
@@ -519,6 +522,12 @@
             .section { page-break-inside: avoid; }
             .experience-item { page-break-inside: avoid; }
             .reference-card { page-break-inside: avoid; }
+            .print-hidden { display: none !important; }
+            .print-only { display: block !important; }
+        }
+
+        .print-only {
+            display: none;
         }
 
         .references-grid {
@@ -642,6 +651,13 @@
                 const contentWidth = pdfWidth - (margin * 2);
 
                 const element = document.getElementById('resume-content');
+                
+                // Hide references grid and show "Available upon request" for PDF
+                const refsGrid = element.querySelector('.references-grid');
+                const refsAvailable = element.querySelector('.print-only');
+                if (refsGrid) refsGrid.style.display = 'none';
+                if (refsAvailable) refsAvailable.style.display = 'block';
+
                 const sections = element.querySelectorAll('.section, .header-section');
                 
                 let currentY = margin;
@@ -669,6 +685,21 @@
                     pdf.addImage(imgData, 'PNG', margin, currentY, contentWidth, scaledHeight);
                     currentY += scaledHeight + 5;
                 }
+
+                // Add clickable links
+                const links = element.querySelectorAll('a[href]');
+                links.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && href.startsWith('http')) {
+                        // Find the position of the link in the rendered content
+                        // Note: html2canvas renders as image, so we add links as annotations
+                        pdf.link(margin, margin, contentWidth, 10, { url: href });
+                    }
+                });
+
+                // Restore references display
+                if (refsGrid) refsGrid.style.display = '';
+                if (refsAvailable) refsAvailable.style.display = '';
 
                 pdf.save('Zhiheng_Wang_Resume.pdf');
             } catch (error) {
