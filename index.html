@@ -456,14 +456,122 @@
 
                 <div class="section">
                     <h2>References</h2>
-                    <div class="references">Available upon request</div>
+                    <div class="references-grid">
+                        <div class="reference-card">
+                            <div class="ref-name">Chris Han</div>
+                            <div class="ref-role">Head of Frontend</div>
+                            <a href="https://www.linkedin.com/in/chris-han-75aa4b13b/" target="_blank" class="ref-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                                LinkedIn
+                            </a>
+                        </div>
+                        <div class="reference-card">
+                            <div class="ref-name">Laurence Wang</div>
+                            <div class="ref-role">Head of Research and Innovation APAC</div>
+                            <a href="https://www.linkedin.com/in/wanglaurence/" target="_blank" class="ref-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                                LinkedIn
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div class="footer-actions">
+            <button onclick="window.print()" class="btn-download">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Download PDF
+            </button>
         </div>
 
         <div class="footer">
             Built with care · Last updated July 2026
         </div>
     </div>
+
+    <style>
+        @media print {
+            body { background: white; }
+            .container { padding: 0; max-width: 100%; }
+            .card { box-shadow: none; border: none; }
+            .footer-actions { display: none !important; }
+            .footer { display: none !important; }
+        }
+
+        .references-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .reference-card {
+            padding: 20px;
+            background-color: hsl(var(--muted));
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+        }
+
+        .ref-name {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin-bottom: 4px;
+        }
+
+        .ref-role {
+            font-size: 0.8125rem;
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 12px;
+        }
+
+        .ref-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8125rem;
+            color: hsl(var(--foreground));
+            text-decoration: none;
+            padding: 6px 12px;
+            background-color: hsl(var(--background));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            transition: background-color 0.15s;
+        }
+
+        .ref-link:hover {
+            background-color: hsl(var(--accent));
+        }
+
+        .footer-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: hsl(var(--primary-foreground));
+            background-color: hsl(var(--primary));
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: opacity 0.15s;
+            font-family: inherit;
+        }
+
+        .btn-download:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 640px) {
+            .references-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </body>
 </html>
