@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --background: 0 0% 100%;
@@ -338,7 +340,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="card">
+        <div class="card" id="resume-content">
             <div class="card-header">
                 <div class="header-section">
                     <h1>Zhiheng Wang</h1>
@@ -481,7 +483,7 @@
         </div>
 
         <div class="footer-actions">
-            <button onclick="window.print()" class="btn-download">
+            <button onclick="downloadPDF()" class="btn-download">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                 Download PDF
             </button>
@@ -490,6 +492,21 @@
         <div class="footer">
             Built with care · Last updated July 2026
         </div>
+    </div>
+
+    <!-- Hidden ATS Keywords - White text invisible to humans but readable by AI/ATS systems -->
+    <div class="ats-keywords" aria-hidden="true">
+        <p>Zhiheng Wang Senior Web Engineer Frontend Developer Full Stack Developer Vue.js React TypeScript JavaScript HTML CSS Node.js TypeScript AWS Docker Git GitHub Agile Scrum Web Development Software Engineer Technical Lead Engineering Manager Auckland New Zealand Open Work Visa Work Permit</p>
+        <p>Vue.js Vue 2 Vue 3 Nuxt.js React.js Next.js Redux Toolkit Pinia Vuex Webpack Vite Micro-frontends Single-SPA TypeScript JavaScript ES6 HTML5 CSS3 Tailwind CSS SCSS SASS</p>
+        <p>Node.js Express.js REST API GraphQL Serverless AWS Lambda Vercel AWS S3 CloudFront CI/CD GitHub Actions Docker DevOps</p>
+        <p>Playwright Jest React Testing Library Unit Testing Integration Testing E2E Testing Test Driven Development TDD</p>
+        <p>Agile Scrum Kanban Sprint Planning Code Review Technical Documentation Architecture Design System Component Library Design Patterns</p>
+        <p>Frontend Architecture State Management Performance Optimization Web Accessibility WCAG Responsive Design Cross-browser Compatibility Progressive Web App PWA</p>
+        <p>Team Leadership Mentoring Code Review Technical Decision Making Stakeholder Management Project Management Product Development</p>
+        <p>Financial Technology FinTech Blockchain Web3 DeFi Digital Assets Smart Contracts Decentralized Applications dApps</p>
+        <p>RANOS Limited BlueMatrix APAC New Zealand China Senior Frontend Developer Frontend Lead Web Engineer</p>
+        <p>Software Engineer Software Development Web Application Development Single Page Application SPA Enterprise Application</p>
+        <p>Zhejiang Gongshang University Bachelor Software Engineering Computer Science Information Technology</p>
     </div>
 
     <style>
@@ -577,9 +594,71 @@
             opacity: 0.9;
         }
 
+        .btn-download:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ATS Keywords - Invisible white text for AI/ATS parsing */
+        .ats-keywords {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            color: white;
+            font-size: 1px;
+            line-height: 1px;
+            white-space: nowrap;
+        }
+
+        .ats-keywords p {
+            margin: 0;
+            padding: 0;
+        }
+
         @media (max-width: 640px) {
             .references-grid { grid-template-columns: 1fr; }
         }
     </style>
+
+    <script>
+        async function downloadPDF() {
+            const btn = document.querySelector('.btn-download');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Generating PDF...';
+
+            try {
+                const element = document.getElementById('resume-content');
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    letterRendering: true,
+                    logging: false
+                });
+
+                const { jsPDF } = window.jspdf;
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+
+                const pdfWidth = 210;
+                const pdfHeight = (imgHeight * pdfWidth) / imgWidth;
+
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+                pdf.save('Zhiheng_Wang_Resume.pdf');
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('PDF generation failed. Please try again or use browser print (Ctrl/Cmd + P).');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+    </script>
 </body>
 </html>
