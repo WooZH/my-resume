@@ -665,13 +665,13 @@
 
                 for (const section of sections) {
                     const canvas = await html2canvas(section, {
-                        scale: 2,
+                        scale: 1.5,
                         useCORS: true,
                         letterRendering: true,
                         logging: false
                     });
 
-                    const imgData = canvas.toDataURL('image/png');
+                    const imgData = canvas.toDataURL('image/jpeg', 0.8);
                     const imgWidth = canvas.width;
                     const imgHeight = canvas.height;
                     const scaledHeight = (imgHeight * contentWidth) / imgWidth;
@@ -682,7 +682,7 @@
                         currentY = margin;
                     }
 
-                    pdf.addImage(imgData, 'PNG', margin, currentY, contentWidth, scaledHeight);
+                    pdf.addImage(imgData, 'JPEG', margin, currentY, contentWidth, scaledHeight);
                     currentY += scaledHeight + 5;
                 }
 
@@ -691,8 +691,6 @@
                 links.forEach(link => {
                     const href = link.getAttribute('href');
                     if (href && href.startsWith('http')) {
-                        // Find the position of the link in the rendered content
-                        // Note: html2canvas renders as image, so we add links as annotations
                         pdf.link(margin, margin, contentWidth, 10, { url: href });
                     }
                 });
